@@ -1,34 +1,27 @@
 <template>
   <div class="container">
     <div>
-      <Logo />
       <h1 class="title">
-        nuxt-test-anecdotes
+        Anecdotes
       </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+<ul>
+        <li v-for="(joke, index) in anecdotes.jokes" :key="index">
+          Анекдот {{index}}
+          {{joke.setup}}
+        </li>
+        </ul>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  async asyncData({ store }) {
+    const anecdotes = await store.dispatch('anecdotes/fetch')
+    console.log('anecdotes', anecdotes)
+    return { anecdotes }
+  }
+}
 </script>
 
 <style>
@@ -67,7 +60,4 @@ export default {}
   padding-bottom: 15px;
 }
 
-.links {
-  padding-top: 15px;
-}
 </style>
