@@ -1,0 +1,58 @@
+// reset/normalize
+@import "./base/"
+
+@import "./vars"
+
+html
+  height: 100vh
+  font-size: 10px
+
+  @media screen and (min-width: $tabletWidth)
+    font-size: 14px
+
+  @media screen and (min-width: $desktopWidth)
+    font-size: 16px
+
+body
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  background-color: $color-bg-body
+
+h1, h2, h3, h4, h5, h6
+  margin: 0
+
+input, textarea, select, button
+  border: 1px solid $border-base
+
+a
+  text-decoration: none
+
+ul, li
+  margin: 0
+  padding: 0
+
+.wrapper
+  display: flex
+  flex-direction: column
+  min-height: 100vh
+  margin: 0 auto
+
+.wrapper-content
+  display: flex
+  flex-direction: column
+  min-height: 100vh
+  &.wrapper-content--fixed
+    padding-top: 100px
+
+.container
+  position: relative
+  padding: 1rem
+  transition: padding .2s ease, width .2s ease, height .2s ease // надо закомментить чтобы переходы между страницами были не плавными
+  @media screen and (min-width: $phoneWidth)
+    padding: 1.5rem
+  @media screen and (min-width: $tabletWidth)
+    padding: 2rem
+  @media screen and (min-width: $smDesktopWidth)
+    padding: 3rem
+  @media screen and (min-width: $desktopWidth)
+    padding: 4rem
