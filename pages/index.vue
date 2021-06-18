@@ -4,12 +4,16 @@
       <h1 class="title">
         Anecdotes
       </h1>
-<ul>
-        <li v-for="(joke, index) in anecdotes.jokes" :key="index">
-          Анекдот {{index}}
-          {{joke.setup}}
+      <ul>
+        <li
+          v-for="(joke, index) in anecdotes.jokes"
+          :key="index"
+        >
+          <div class="card">
+            Анекдот {{index}} {{joke.setup}}
+          </div>
         </li>
-        </ul>
+      </ul>
     </div>
   </div>
 </template>
@@ -35,16 +39,8 @@ export default {
 }
 
 .title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
+  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;
@@ -59,5 +55,9 @@ export default {
   word-spacing: 5px;
   padding-bottom: 15px;
 }
-
+.card {
+  border: 1px solid green;
+  padding: 10px;
+  margin: 10px;
+}
 </style>

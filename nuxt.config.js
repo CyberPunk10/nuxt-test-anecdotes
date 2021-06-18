@@ -17,6 +17,7 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
+    'assets/sass/main.sass'
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
@@ -32,6 +33,7 @@ export default {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
+    '@nuxtjs/style-resources',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
   ],
@@ -39,7 +41,12 @@ export default {
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
     baseURL: process.env.BASE_URL || 'https://v2.jokeapi.dev/'
+  },
 
+  styleResources: {
+    scss: [
+      './assets/sass/vars/*.scss',
+    ]
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
