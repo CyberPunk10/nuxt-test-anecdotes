@@ -1,4 +1,4 @@
-# nuxt-test-anecdotes
+# nuxt-test-jokes
 
 ## Build Setup
 

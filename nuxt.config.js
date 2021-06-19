@@ -4,7 +4,7 @@ export default {
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'nuxt-test-anecdotes',
+    title: 'nuxt-test-jokes',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -14,7 +14,10 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-
+  loading: {
+    color: 'blue',
+    height: '5px'
+  },
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
     'assets/sass/main.sass'
@@ -33,7 +36,7 @@ export default {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
-    '@nuxtjs/style-resources',
+    // '@nuxtjs/style-resources',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
   ],
@@ -43,11 +46,11 @@ export default {
     baseURL: process.env.BASE_URL || 'https://v2.jokeapi.dev/'
   },
 
-  styleResources: {
-    scss: [
-      './assets/sass/vars/*.scss',
-    ]
-  },
+  // styleResources: {
+  //   sass: [
+  //     'assets/sass/vars/_index.sass',
+  //   ]
+  // },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {

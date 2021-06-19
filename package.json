@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-test-anecdotes",
+  "name": "nuxt-test-jokes",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -14,7 +14,6 @@
     "nuxt": "^2.14.6"
   },
   "devDependencies": {
-    "@nuxtjs/style-resources": "^1.1.0",
     "fibers": "^5.0.0",
     "sass": "^1.35.1",
     "sass-loader": "^10.2.0"
