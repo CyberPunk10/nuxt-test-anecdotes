@@ -1,34 +1,44 @@
 <template>
-  <div>
+  <div class="position-relative">
+    <span
+      v-if="error"
+      class="error-to-print"
+    >Error: {{ error.message }}</span>
     <Nuxt />
   </div>
 </template>
 
+<script>
+export default {
+  computed: {
+    error() {
+      console.log('[this.$store.getters.error]: ', this.$store.getters.error)
+      return this.$store.getters.error
+    }
+  },
+}
+</script>
+
+<style lang="sass">
+.position-relative
+  position: relative
+.error-to-print
+  position: absolute
+  display: inline-block
+  color: red
+  margin: 0 1rem 1rem
+  padding: .75rem 1rem 1rem
+  background-color: #fff
+  border-bottom-right-radius: 1rem
+  border-bottom-left-radius: 1rem
+  border: 1px solid red
+  border-top: 0
+</style>
+
 <style>
 html {
-  font-family:
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .button--green {
