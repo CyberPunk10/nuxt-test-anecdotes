@@ -7,16 +7,15 @@ html
   height: 100vh
   font-size: 10px
 
-  @media screen and (min-width: $tabletWidth)
-    font-size: 14px
-
-  @media screen and (min-width: $desktopWidth)
-    font-size: 16px
-
 body
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   background-color: $color-bg-body
+  font-size: 1.4rem
+  @media screen and (min-width: $tabletWidth)
+    font-size: 15px
+  @media screen and (min-width: $desktopWidth)
+    font-size: 16px
 
 h1, h2, h3, h4, h5, h6
   margin: 0
