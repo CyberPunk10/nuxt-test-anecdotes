@@ -30,23 +30,10 @@ ul, li
   margin: 0
   padding: 0
 
-.wrapper
-  display: flex
-  flex-direction: column
-  min-height: 100vh
-  margin: 0 auto
-
-.wrapper-content
-  display: flex
-  flex-direction: column
-  min-height: 100vh
-  &.wrapper-content--fixed
-    padding-top: 100px
-
 .container
   position: relative
   padding: 1rem
-  transition: padding .2s ease, width .2s ease, height .2s ease // надо закомментить чтобы переходы между страницами были не плавными
+  transition: padding .2s ease, width .2s ease, height .2s ease
   @media screen and (min-width: $phoneWidth)
     padding: 1.5rem
   @media screen and (min-width: $tabletWidth)
