@@ -13,5 +13,5 @@ export const mutations = {
 }
 
 export const getters = {
-  error: state => state.error
+  getError: state => state.error
 }

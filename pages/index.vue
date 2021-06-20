@@ -1,8 +1,14 @@
 <template>
   <div class="container">
-    <p class="info-array-liked">Indexes liked jokes: {{idJokesLiked}}</p>
+    <div class="info-array-liked">
+      <p>Total Count Jokes: {{ totalCountJokes }}</p>
+      <p>Indexes liked jokes: {{ idJokesLiked }}</p>
+      <p>Current length list: {{ jokes.length }}</p>
+    </div>
+
     <input
-      class="input-search"
+      class="search-input"
+      @input="searchJokeOnValue"
       type="text"
       autofocus
       placeholder="Введите слово для поиска среди анекдотов..."
@@ -19,8 +25,7 @@
           >Анекдот {{index + 1}}
             <span
               @click="toggleLike(joke.id, $event)"
-              class="material-icons md-dark md-inactive"
-              :class="{'md-inactive': idJokesLiked.includes(joke.id)}"
+              class="material-icons md-dark"
             >thumb_up</span>
           </div>
         </li>
@@ -28,10 +33,16 @@
 
       <li
         ref="loadMore"
-        v-show="!enough"
+        v-if="!enough && !allJokesSavedLocal"
         @click="getData"
       >
         <span> Loading...</span>
+      </li>
+      <li
+        ref="loadMore"
+        v-if="allJokesSavedLocal"
+      >
+        <span class="text-error">Это все шутки, найденые на сервере по такому ключевому слову.</span>
       </li>
     </ul>
   </div>
@@ -40,6 +51,9 @@
 <script>
 export default {
   computed: {
+    totalCountJokes() {
+      return this.$store.getters['jokes/getTotalCountJokes']
+    },
     jokes() {
       return this.$store.getters['jokes/getJokes']
     },
@@ -49,6 +63,27 @@ export default {
     idJokesLiked() {
       return this.$store.getters['jokes/getLikedJokes']
     },
+    stateError() {
+      return this.$store.getters.getError
+    },
+    allJokesSavedLocal() {
+      return this.$store.getters['jokes/getAllJokesSavedLocal']
+    }
+  },
+
+  watch: {
+    jokes() {
+      console.log('computed', this.jokes.length < 10)
+      if (this.jokes.length < 10) {
+        this.getData()
+      }
+    },
+    stateError() {
+      console.log('stateError', this.stateError?.code)
+      if (this.stateError?.code === 106) {
+        this.getData()
+      }
+    }
   },
 
   beforeMount() {
@@ -94,10 +129,11 @@ export default {
       }
     },
     toggleLike(id, $event) {
-      const target = $event.target
-      target.classList.toggle('md-inactive')
-      target.parentElement.classList.toggle('liked')
+      $event.target.parentElement.classList.toggle('liked')
       this.$store.dispatch('jokes/toggleLikedJoke', id)
+    },
+    searchJokeOnValue($event) {
+      this.$store.dispatch('jokes/searchJokeOnValue', $event.target.value)
     }
   },
 }
@@ -119,26 +155,30 @@ $color-dark-shade-10: rgba(31, 32, 65, 0.10)
 $color-dark-shade-20: rgba(31, 32, 65, 0.20)
 $colorBlue: #409eff
 $colorBlueLite: #409eff40
+.container.pt-5
+  padding-top: 5rem
 
 .material-icons.md-dark
   user-select: none
-  color: #409eff99
-  transition: $transitionDefaultHover
-.material-icons.md-dark.md-inactive
   color: rgba(0, 0, 0, 0.3)
+  transition: $transitionDefaultHover
 
 .info-array-liked
   padding: 1rem
-  margin-bottom: 1rem
-  color: #444
+  margin-bottom: 2rem
+  color: #888
   border: 1px solid $color-dark-shade-20
   border-radius: 6px
+  p
+    margin-bottom: 1rem
+    &:last-child
+      margin-bottom: 0
 
 .list,
-.input-search
+.search-input
   width: 100%
 
-.input-search
+.search-input
   margin-bottom: 1rem
   border: 1px solid $color-dark-shade-20
   padding: 1rem
@@ -156,9 +196,7 @@ $colorBlueLite: #409eff40
   border: 1px solid $color-dark-shade-10
   padding: 1rem
   border-radius: 6px
-  padding: 1rem
-
-.input-search,
+.search-input,
 .card
   transition: all .2s ease-out
 
@@ -171,7 +209,7 @@ $colorBlueLite: #409eff40
   cursor: pointer
   width: 100%
   padding: 1.2rem
-  color: #444
+  color: #555
   background-color: #fff
   border-radius: $borderRadius
   border: 1px solid #e8e8e8
@@ -181,7 +219,6 @@ $colorBlueLite: #409eff40
   align-items: center
   transition: $transitionDefaultHover
   &:hover
-    background-color: #fff
     color: $colorBlue
     box-shadow: $borderShadowHover
     span.material-icons.md-dark:hover
@@ -192,8 +229,10 @@ $colorBlueLite: #409eff40
     color: $colorBlue
     &:hover
       border-color: #409eff60
+    .material-icons.md-dark
+      color: #409effbb
 
-.input-search,
+.search-input,
 .card
   @media screen and (min-width: $phoneWidth)
     padding: 1.5rem
@@ -201,4 +240,8 @@ $colorBlueLite: #409eff40
   @media screen and (min-width: $tabletWidth)
     padding: 2rem
     font-size: 1.6rem
+
+.text-error
+  $red: #ff6163
+  color: $red
 </style>
