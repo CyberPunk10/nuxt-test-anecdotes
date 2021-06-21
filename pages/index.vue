@@ -8,7 +8,7 @@
 
     <input
       class="search-input"
-      @input="searchJokeOnValue"
+      @input="searchJokeByValue"
       type="text"
       autofocus
       placeholder="Введите слово для поиска среди анекдотов..."
@@ -73,13 +73,13 @@ export default {
 
   watch: {
     jokes() {
-      console.log('computed', this.jokes.length < 10)
+      // console.log('computed', this.jokes.length < 10)
       if (this.jokes.length < 10) {
         this.getData()
       }
     },
     stateError() {
-      console.log('stateError', this.stateError?.code)
+      // console.log('stateError', this.stateError?.code)
       if (this.stateError?.code === 106) {
         this.getData()
       }
@@ -132,8 +132,8 @@ export default {
       $event.target.parentElement.classList.toggle('liked')
       this.$store.dispatch('jokes/toggleLikedJoke', id)
     },
-    searchJokeOnValue($event) {
-      this.$store.dispatch('jokes/searchJokeOnValue', $event.target.value)
+    searchJokeByValue($event) {
+      this.$store.dispatch('jokes/searchJokeByValue', $event.target.value)
     }
   },
 }
