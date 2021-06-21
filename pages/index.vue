@@ -1,11 +1,12 @@
 <template>
   <div class="container">
+    <AboutMe class="list" />
+
     <div class="info-array-liked">
       <p>Total Count Jokes: {{ totalCountJokes }}</p>
       <p>Indexes liked jokes: {{ idJokesLiked }}</p>
       <p>Current length list: {{ jokes.length }}</p>
     </div>
-
     <input
       class="search-input"
       @input="searchJokeByValue"
@@ -13,6 +14,7 @@
       autofocus
       placeholder="Введите слово для поиска среди анекдотов..."
     >
+
     <ul class="list">
       <template v-if="jokes">
         <li
@@ -58,6 +60,7 @@
 
 <script>
 export default {
+  transition: 'home',
   computed: {
     totalCountJokes() {
       return this.$store.getters['jokes/getTotalCountJokes']
@@ -155,8 +158,6 @@ $color-dark-shade-10: rgba(31, 32, 65, 0.10)
 $color-dark-shade-20: rgba(31, 32, 65, 0.20)
 $colorBlue: #409eff
 $colorBlueLite: #409eff40
-.container.pt-5
-  padding-top: 5rem
 
 .material-icons.md-dark
   user-select: none
@@ -244,4 +245,15 @@ $colorBlueLite: #409eff40
 .text-error
   $red: #ff6163
   color: $red
+</style>
+
+<style>
+.home-enter-active,
+.home-leave-active {
+  transition: opacity 0.5s;
+}
+.home-enter,
+.home-leave-active {
+  opacity: 0;
+}
 </style>
