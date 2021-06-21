@@ -80,7 +80,6 @@ export const actions = {
         }
       } catch (error) {
         commit('setError', error, { root: true })
-        throw error
       }
     }
 
@@ -116,7 +115,6 @@ export const actions = {
         }
       } catch (error) {
         commit('setError', error, { root: true })
-        throw error
       }
     } else {
       // console.log('С сервера загружены все доступные jokes')
