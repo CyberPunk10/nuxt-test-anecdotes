@@ -61,6 +61,10 @@
 <script>
 export default {
   transition: 'home',
+  async fetch() {
+    await this.$store.dispatch('jokes/getData')
+  },
+
   computed: {
     totalCountJokes() {
       return this.$store.getters['jokes/getTotalCountJokes']
@@ -100,8 +104,6 @@ export default {
   },
 
   mounted() {
-    this.getData()
-
     if (localStorage.getItem('data-liked-jokes') !== null) {
       this.$store.commit(
         'jokes/setFromLocalstorageLikedJokes',
@@ -245,15 +247,4 @@ $colorBlueLite: #409eff40
 .text-error
   $red: #ff6163
   color: $red
-</style>
-
-<style>
-.home-enter-active,
-.home-leave-active {
-  transition: opacity 0.5s;
-}
-.home-enter,
-.home-leave-active {
-  opacity: 0;
-}
 </style>
