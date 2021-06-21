@@ -36,7 +36,15 @@
         v-if="!enough && !allJokesSavedLocal"
         @click="getData"
       >
-        <span>Loading...</span>
+        <div v-if="stateError &&  stateError.request && stateError.request.status === 429">
+          <span class="text-error">
+            Вы превысили лимит в 120 запросов в минуту и должны немного подождать,
+            пока вам не разрешат отправлять запросы снова.
+
+          </span>
+          <br><br> <span> Попробовать снова</span>
+        </div>
+        <span v-else>Loading...</span>
       </li>
       <li
         ref="loadMore"
@@ -73,13 +81,11 @@ export default {
 
   watch: {
     jokes() {
-      // console.log('computed', this.jokes.length < 10)
       if (this.jokes.length < 10) {
         this.getData()
       }
     },
     stateError() {
-      console.log(this.stateError)
       if (this.stateError?.code === 106) {
         this.getData()
       }
@@ -122,11 +128,7 @@ export default {
       return { top }
     },
     async getData() {
-      try {
-        await this.$store.dispatch('jokes/getData')
-      } catch (error) {
-        console.log('error', error)
-      }
+      await this.$store.dispatch('jokes/getData')
     },
     toggleLike(id, $event) {
       $event.target.parentElement.classList.toggle('liked')
@@ -146,10 +148,8 @@ $borderShadowHover: 2px 2px 11px rgba(88,88,88,.15) // for box-shadow // пох�
 $borderRadius: 6px
 
 $desktopWidth: 1280px
-$smDesktopWidth: 980px
 $tabletWidth: 768px
 $phoneWidth: 480px
-$smPhoneWidth: 320px
 
 $color-dark-shade-10: rgba(31, 32, 65, 0.10)
 $color-dark-shade-20: rgba(31, 32, 65, 0.20)
