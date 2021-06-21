@@ -36,7 +36,7 @@
         v-if="!enough && !allJokesSavedLocal"
         @click="getData"
       >
-        <span> Loading...</span>
+        <span>Loading...</span>
       </li>
       <li
         ref="loadMore"
@@ -79,7 +79,7 @@ export default {
       }
     },
     stateError() {
-      // console.log('stateError', this.stateError?.code)
+      console.log(this.stateError)
       if (this.stateError?.code === 106) {
         this.getData()
       }
