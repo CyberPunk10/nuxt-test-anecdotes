@@ -1,10 +1,10 @@
 export const state = () => ({
   jokes: [],
-  filteredJokes: [],
   searchValue: null,
   searchValueOld: {
     valueOld: null,
-    shorter: false
+    symbolRemoved: false,
+    valueOldMax: null
   },
   enough: false,
   idJokesLiked: [],
@@ -40,46 +40,88 @@ export const mutations = {
     else state.idJokesLiked.splice(isFound, 1)
     storage('data-liked-jokes', state.idJokesLiked)
   },
-  searchJokeOnValue(state, value) {
-    const { valueOld, shorter } = state.searchValueOld
+  searchJokeByValue(state, value) {
+    state.jokes = state.jokes.filter(el => {
+      return el?.joke?.includes(value) || el?.setup?.includes(value)
+    })
 
 
-    if (value?.length < valueOld?.length) {
+
+    const { valueOld, symbolRemoved, valueOldMax } = state.searchValueOld
+
+    if (value?.length < valueOld?.length) { // &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& УДАЛЕНИЕ &&&&&&&&&&&&&
+      console.log('ACTION: произошло удаление символа')
+
+      //   // console.log('[LENGHT]: valueNew < valueOld')
+      //   if (!valueOld.startsWith(value)) {
+      //     state.countRequest = 0
+      //     console.log('{{{{{{{{{{{{{{[[[[[ RESET ]]]]]}}}}}}}}}}}}}}')
+      //   }
+
+      if (valueOldMax.length === value.length + 1) {
+        console.log('произошло удаление одного символов')
+        // state.searchValueOld.valueOldMax = valueOld
+      } else {
+        console.log('произошло удаление символов (больше одного раз подряд)')
+      }
+      state.searchValueOld.symbolRemoved = true
+    } else if (value?.length === valueOld?.length) { // &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ЗАМЕНА &&&&&&&&&&&&&&
+      console.log('ACTION: произошла замена символа')
+
+      console.log('!valueOld.startsWith(value): ', !valueOld.startsWith(value))
       if (!valueOld.startsWith(value)) {
         state.countRequest = 0
         console.log('{{{{{{{{{{{{{{[[[[[ RESET ]]]]]}}}}}}}}}}}}}}')
-
       }
-    } else {
-      if (!value.startsWith(valueOld)) {
-        state.countRequest = 0
-        console.log('{{{{{{{{{{{{{{[[[[[ RESET ]]]]]}}}}}}}}}}}}}}')
 
-      }
-      // console.log('shorter', shorter)
-      // console.log('valueOld !== value', valueOld !== value)
-      // console.log('valueOld', valueOld, 'value', value)
-      // if (shorter && valueOld !== value) {
-      //   console.log('{{{{{{{{{{{{{{[[[[[ RESET ]]]]]}}}}}}}}}}}}}}')
-      //   state.countRequest = 0
-      // }
-      // state.searchValueOld.shorter = false
-    }
+      state.searchValueOld.symbolRemoved = false
+    } else if (value?.length > valueOld?.length || (!valueOld && value?.length === 1)) { // &&&&&&&&& ДОБАВЛЕНИЕ &&&&&&&&&
+      console.log('ACTION: произошло добавление символа (old: ev, new: eve)', valueOld, value)
 
-    state.searchValueOld.valueOld = state.searchValue = value ? value : null
-    state.filteredJokes = []
-
-    if (value) {
-      state.jokes.forEach(el => {
-        const joke = el.joke ? el.joke : el.setup
-        if (joke.includes(value)) {
-          state.filteredJokes.push(el)
+      // console.log('valueOld !== (value.slice(0, valueOld.length))', valueOld !== (value.slice(0, valueOld.length)))
+      if (!valueOld) {
+        console.log('valueOld === null')
+      } else if (!valueOldMax) {
+        console.log('valueOldMax === null')
+      } else if (valueOldMax.length < value.length) {
+        console.log('valueOldMax.length < value.length', valueOldMax.length < value.length) // ничего не делаем
+      } else {
+        if (!valueOldMax.startsWith(value)) {
+          state.countRequest = 0
+          console.log('{{{{{{{{{{{{{{[[[[[ RESET ]]]]]}}}}}}}}}}}}}}')
         }
-      })
+      }
+
+      //   // if (value !== valueOld) {
+      //   //   state.countRequest = 0
+      //   //   console.log('{{{{{{{{{{{{{{[[[[[ RESET ]]]]]}}}}}}}}}}}}}}')
+      //   // }
+
+      state.searchValueOld.valueOldMax = value
+      state.searchValueOld.valueOld = value
+      state.searchValueOld.symbolRemoved = false
+    } else {
+      console.log('Случай 4')
     }
+
+
+
+    // if (state.countRequest === state.countRequestMax) { // && добавлена новая буква отличная от ранее набранной
+    //   commit('clearCountRequest')
+
+    // }
+
+
+
+    state.searchValue = value ? value : null
+    state.searchValueOld.valueOld = value ? value : null
+
   },
   updateCountRequest(state) {
     state.countRequest++
+  },
+  clearCountRequest(state) {
+    state.countRequest = 0
   },
   setCountRequestMax(state, value) {
     state.countRequestMax = value
@@ -87,7 +129,7 @@ export const mutations = {
   setTotalCountJokes(state, value) {
     state.totalCountJokes = value
   },
-  updateAllJokesSavedLocal(state, value) {
+  updateDownloadAllJokes(state, value) {
     state.allJokesSavedLocal = value
   },
 }
@@ -113,7 +155,7 @@ export const actions = {
 
     // We send requests only if not all jokes are saved locally yet
     if (state.countRequest < state.countRequestMax) {
-      commit('updateAllJokesSavedLocal', false)
+      commit('updateDownloadAllJokes', false)
 
       const countRequest = state.countRequest
       const pageSize = state.pageSize
@@ -133,7 +175,7 @@ export const actions = {
         if (!data.error) {
           commit('setJokes', data)
           if (state.searchValue) {
-            commit('searchJokeOnValue', state.searchValue)
+            commit('searchJokeByValue', state.searchValue)
           }
         } else {
           commit('setError', data, { root: true })
@@ -144,22 +186,24 @@ export const actions = {
       }
     } else {
       console.log('С сервера загружены все доступные jokes')
-      commit('updateAllJokesSavedLocal', true)
+      commit('updateDownloadAllJokes', true)
     }
   },
 
   toggleLikedJoke({ commit }, data) {
     commit('toggleLikedJoke', data)
   },
-  searchJokeOnValue({ commit }, data) {
-    commit('clearError', null, { root: true })
-    commit('searchJokeOnValue', data)
+  searchJokeByValue({ commit, state }, value) {
+    // commit('clearError', null, { root: true })
+
+    commit('searchJokeByValue', value)
+
   },
 }
 
 export const getters = {
   getTotalCountJokes: state => state.totalCountJokes,
-  getJokes: state => state.searchValue ? state.filteredJokes : state.jokes,
+  getJokes: state => state.jokes,
   getEnough: state => state.enough,
   getLikedJokes: state => state.idJokesLiked,
   getAllJokesSavedLocal: state => state.allJokesSavedLocal
