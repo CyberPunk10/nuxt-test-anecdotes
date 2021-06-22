@@ -37,9 +37,6 @@ export default {
     padding-top: 0
 
 .error-to-print
-  $transitionDefault: all .2s ease
-  $red: #ff6163
-
   display: inline-block
   color: $red
   background-color: #fff

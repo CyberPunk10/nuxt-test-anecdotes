@@ -147,20 +147,6 @@ export default {
 </script>
 
 <style lang="sass">
-$transitionDefaultHover: all .2s ease
-$borderShadow: 0 0 2px rgba(88,88,88,.15) // for box-shadow
-$borderShadowHover: 2px 2px 11px rgba(88,88,88,.15) // for box-shadow // похожий: box-shadow: 0 2px 12px 0 rgba(0,0,0,.1)
-$borderRadius: 6px
-
-$desktopWidth: 1280px
-$tabletWidth: 768px
-$phoneWidth: 480px
-
-$color-dark-shade-10: rgba(31, 32, 65, 0.10)
-$color-dark-shade-20: rgba(31, 32, 65, 0.20)
-$colorBlue: #409eff
-$colorBlueLite: #409eff40
-
 .material-icons.md-dark
   user-select: none
   color: rgba(0, 0, 0, 0.3)
@@ -245,6 +231,5 @@ $colorBlueLite: #409eff40
     font-size: 1.6rem
 
 .text-error
-  $red: #ff6163
   color: $red
 </style>
