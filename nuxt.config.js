@@ -21,7 +21,7 @@ export default {
   },
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
-    'assets/sass/main.sass'
+    '~assets/sass/main.sass'
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
@@ -37,9 +37,8 @@ export default {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
-    // '@nuxtjs/style-resources',
-    // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
+    '@nuxtjs/style-resources', // https://github.com/nuxt-community/style-resources-module/
+    '@nuxtjs/axios', // https://go.nuxtjs.dev/axios
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -47,11 +46,15 @@ export default {
     baseURL: process.env.BASE_URL || 'https://v2.jokeapi.dev/'
   },
 
-  // styleResources: {
-  //   sass: [
-  //     'assets/sass/vars/_index.sass',
-  //   ]
-  // },
+  styleResources: {
+    sass: [
+      '~assets/sass/vars/_index.sass',
+    ],
+    // scss: [],
+    // less: [],
+    // stylus: [],
+    hoistUseStatements: true  // Hoists the "@use" imports. Applies only to "sass", "scss" and "less". Default: false.
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {

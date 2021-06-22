@@ -67,9 +67,6 @@
 
 <style lang="sass">
 .info-block.text
-  $desktopWidth: 1280px
-  $phoneWidth: 480px
-
   background-color: #fff
   margin-top: 2rem
   margin-bottom: 1.5rem
